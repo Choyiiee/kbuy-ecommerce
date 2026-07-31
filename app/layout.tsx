@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { Sora, Inter, JetBrains_Mono } from 'next/font/google'
+import { ConfigProvider } from 'antd'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
 import './globals.css'
 
-import Navbar from '@/components/navbar'
-import Footer from '@/components/footer'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
 
 const sora = Sora({
     variable: '--font-sora',
@@ -36,14 +38,22 @@ export default function RootLayout({
             className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
         >
             <body className="min-h-screen flex flex-col font-sans">
-                {/* Navbar is persistent across all routes */}
-                <Navbar />
-
-                {/* Grow ensures main fills space, pushing footer to the bottom */}
-                <main className="grow">{children}</main>
-
-                {/* Footer is persistent across all routes */}
-                <Footer />
+                <AntdRegistry>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: '#f97316',
+                                borderRadius: 8,
+                                fontFamily:
+                                    "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+                            },
+                        }}
+                    >
+                        <Navbar />
+                        <main className="grow">{children}</main>
+                        <Footer />
+                    </ConfigProvider>
+                </AntdRegistry>
             </body>
         </html>
     )
